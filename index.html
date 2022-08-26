@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="./assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="./assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="./assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="./assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Helper: ANCIENT HORROR</title>
+</head>
+<body>
+    
+    <div class="app">
+        <div class="ancient-container">
+            <div class="ancient-card" id="ancient-card-1"></div>
+            <div class="ancient-card" id="ancient-card-2"></div>
+            <div class="ancient-card" id="ancient-card-3"></div>
+            <div class="ancient-card" id="ancient-card-4"></div>
+        </div>
+
+        <div class="difficulty-container none">
+            <div class="difficulty" id="difficulty-1">Очень легкий</div>
+            <div class="difficulty" id="difficulty-2">Легкий</div>
+            <div class="difficulty" id="difficulty-3">Средний</div>
+            <div class="difficulty" id="difficulty-4">Сложный</div>
+            <div class="difficulty" id="difficulty-5">Очень сложный</div>
+        </div>
+
+        <div class="desc-container">
+            <div class="zames none">Замешать колоду</div>
+            <div class="desc none"></div>
+            <div class="last-card none"></div>
+            <div class="current-state none">
+                <div class="stage-container">
+                    <span class="stage-text">Первая стадия</span>
+                    <div class="dots-container">
+                        <div class="dot green">0</div>
+                        <div class="dot brown">2</div>
+                        <div class="dot blue">1</div>
+                    </div>
+                </div>
+                <div class="stage-container">
+                    <div class="stage-text">Вторая стадия</div>
+                    <div class="dots-container">
+                        <div class="dot green">1</div>
+                        <div class="dot brown">4</div>
+                        <div class="dot blue">2</div>
+                    </div>
+                </div>
+                <div class="stage-container">
+                    <span class="stage-text">Третья стадия</span>
+                    <div class="dots-container">
+                        <div class="dot green">3</div>
+                        <div class="dot brown">1</div>
+                        <div class="dot blue">4</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./js/index.js"></script>
+
+</body>
+</html>
