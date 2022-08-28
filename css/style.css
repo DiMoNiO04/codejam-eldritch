@@ -57,7 +57,7 @@
     background-image: url(../assets/Ancients/ShubNiggurath.png);
 }
 
-.difficulty-container{
+.levels-container{
     display: flex;
     flex-direction: column;
     height: 25%;
@@ -67,7 +67,7 @@
     padding: 20px 0;
 }
 
-.difficulty{
+.level{
     font-size: 20px;
     color: rgb(63, 9, 63);
     background: violet;
@@ -78,16 +78,16 @@
     text-align: center; 
 }
 
-.difficulty:hover, .zames:hover{
+.level:hover, .zames:hover{
     cursor: pointer;
     background-color: brown;
 }
 
-.difficulty-active{
+.level-active{
     background-color: brown;
 }
 
-.difficulty:last-child{
+.level:last-child{
     margin-bottom: 0px;
 }
 
@@ -187,7 +187,9 @@
     background-size: cover;
 }
 
-
+.stage-text-active{
+    color: brown;
+}
 
 .none{
     opacity: 0;

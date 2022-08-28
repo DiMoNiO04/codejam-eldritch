@@ -3,10 +3,11 @@ import cardsBlue from '../data/mythicCards/blue/index.js'
 import cardsGreen from '../data/mythicCards/green/index.js'
 import ancients from '../data/ancients.js'
 
-const difficultyContainer = document.querySelector('.difficulty-container');
+//-----------------------------------Разметка html----------------------------------//
+const levelsContainer = document.querySelector('.levels-container');
 const ancientContainer = document.querySelector('.ancient-container');
 const ancientCard = document.querySelectorAll('.ancient-card');
-const difficultys = document.querySelectorAll('.difficulty');
+const levels = document.querySelectorAll('.level');
 const zames = document.querySelector('.zames');
 const desc = document.querySelector('.desc')
 const lastCard = document.querySelector('.last-card')
@@ -14,10 +15,10 @@ const currentState = document.querySelector('.current-state')
 
 const clickAncientContainer = (event) => {
 
-    difficultyContainer.classList.remove('none')
-    difficultyContainer.classList.add('visibly')
+    levelsContainer.classList.remove('none')
+    levelsContainer.classList.add('visibly')
 
-    let idCard = event.target.getAttribute('id')
+    let idCard= event.target.getAttribute('id')
     let indexActiveCard = String(idCard).substr(-1)
 
     for(let i=0; i<ancientCard.length; i++){
@@ -26,18 +27,18 @@ const clickAncientContainer = (event) => {
     ancientCard[indexActiveCard - 1].classList.add('ancient-card-active')
 }
 
-const clickAncientDifficulty = (event) => {
+const clickAncientLevels = (event) => {
 
     zames.classList.remove('none')
     zames.classList.add('visibly')
     
-    let idDifficulty = event.target.getAttribute('id')
-    let indexDiffuclty = String(idDifficulty).substr(-1)
+    let idLevel = event.target.getAttribute('id')
+    let indexLevel = String(idLevel).substr(-1)
 
-    for(let i=0; i<difficultys.length; i++){
-        difficultys[i].classList.remove('difficulty-active')
+    for(let i=0; i < levels.length; i++){
+        levels[i].classList.remove('level-active')
     }
-    difficultys[indexDiffuclty - 1].classList.add('difficulty-active')
+    levels[indexLevel].classList.add('level-active')
 }
 
 const clickZames = () => {
@@ -58,81 +59,67 @@ const clickDesc = () => {
 }
 
 ancientContainer.addEventListener('click', clickAncientContainer);
-difficultyContainer.addEventListener('click', clickAncientDifficulty);
+levelsContainer.addEventListener('click', clickAncientLevels);
 zames.addEventListener('click', clickZames);
 desc.addEventListener('click', clickDesc);
+//---------------------------------------------------------------------//
 
 
-
-const greenCard = 'greenCards';
-const brownCard = 'brownCards';
-const blueCard = 'blueCards';
-const firstStage = 'firstStage';
-const secondStage = 'secondStage';
-const thirdStage = 'thirdStage'
+const greenCard = 'greenCards', brownCard = 'brownCards', blueCard = 'blueCards';
+const firstStage = 'firstStage', secondStage = 'secondStage', thirdStage = 'thirdStage';
 let greenCards = 0, blueCards = 0, brownCards = 0;
-let arr = [];
 const arrStages = [firstStage, secondStage, thirdStage]
+let indexActiveAncient = 0, countCardsStage = 0, numberStage = 0;
+let arr = [], arrBlue = [], arrGreen = [], arrBrown = [], arrStageColor = [];
 
-let indexActiveAncient = 0;
+const getRandomNum = (min, max) => Math.floor(Math.random() * (max - min + min) + min);
 
-function getIdAncient(event){
+const getIdAncient = (event) => {
     const idCard = event.target.id;
     const index = String(idCard).substr(-1) - 1
     return index
 }
 
-function getIndexActiveAncient(event){
+const getIndexActiveAncient = (event) => {
     getIdAncient(event)
     indexActiveAncient = getIdAncient(event)
     return indexActiveAncient
 }
 
-function getArrayWithCountCards(){
-    
-    let index = 0
-    console.log(indexActiveAncient)
+const getArrayWithCountCards = () => {
+
     greenCards = ancients[indexActiveAncient][firstStage][greenCard ] + ancients[indexActiveAncient][secondStage][greenCard ] + ancients[indexActiveAncient][thirdStage][greenCard ];
     brownCards = ancients[indexActiveAncient][firstStage][brownCard ] + ancients[indexActiveAncient][secondStage][brownCard ] + ancients[indexActiveAncient][thirdStage][brownCard ];
     blueCards = ancients[indexActiveAncient][firstStage][blueCard ] + ancients[indexActiveAncient][secondStage][blueCard ] + ancients[indexActiveAncient][thirdStage][blueCard ];
 
-    let arr = [greenCards, brownCards, blueCards];
+    arr = [greenCards, brownCards, blueCards];
     return arr;
 }
 
+let idLevel = 0;
+const getIdLevelCard = () => idLevel = event.target.getAttribute('id')
 
-const getRandomNum = (min, max) => Math.floor(Math.random() * (max - min + min) + min);
-let arrBlue = [], arrGreen = [], arrBrown = [];
-let arrStageColor = []
-
-
-function getIdDifficultCard(){
-    let idDifficulty = event.target.getAttribute('id')
-    let index = String(idDifficulty).substr(-1);
-    return index;
-}
-
-function getArrayImageColorCard(){
+const getArrayImageColorCard = () => {
     
-    const indexDifficult = getIdDifficultCard();
-    if(indexDifficult === '1'){
+    const indexLevel = getIdLevelCard();
+    if(indexLevel === '0'){
 
     }
-    if(indexDifficult === '2'){
+    if(indexLevel === '1'){
 
     }
-    if(indexDifficult === '3'){
-        difficultUsually();
+    if(indexLevel === '2'){
+        mediumLevel();
     }
-    if(indexDifficult === '4'){
+    if(indexLevel === '3'){
 
     }
-    if(indexDifficult === '5'){
+    if(indexLevel === '4'){
 
     }
 }
 
-function getNumberImageColorCard(color, arrColor, cardsColor, arrCards){
+const getNumberImageColorCard = (color, arrColor, cardsColor, arrCards) => {
    
     for(let i=0; i<arrCards[color]; i++){
         let rand = getRandomNum(1, cardsColor.length);
@@ -141,15 +128,10 @@ function getNumberImageColorCard(color, arrColor, cardsColor, arrCards){
     return arrColor
 }
 
-let stage = 0
-function getCountCardsStage(stage){
-    let countCardsStage = ancients[indexActiveAncient][arrStages[stage]][blueCard] + ancients[indexActiveAncient][arrStages[stage]][greenCard] +ancients[indexActiveAncient][arrStages[stage]][brownCard]
-    return countCardsStage
-}
+let stage = 0;
+const getCountCardsStage = (stage) => countCardsStage = ancients[indexActiveAncient][arrStages[stage]][blueCard] + ancients[indexActiveAncient][arrStages[stage]][greenCard] +ancients[indexActiveAncient][arrStages[stage]][brownCard]
 
-let arrNumberStage = 0;
-
-function difficultUsually(){
+const mediumLevel = () => {
 
     let arrCards = getArrayWithCountCards();
     getNumberImageColorCard(0, arrGreen, cardsGreen, arrCards);
@@ -163,27 +145,28 @@ function difficultUsually(){
         backgroundImage()
         countCardsStage--;
 
-        if(countCardsStage === 0 && arrNumberStage !== 2){
-            countCardsStage = getCountCardsStage(stage + 1)
-            arrNumberStage++
-            let numberStages = arrStages[arrNumberStage];
+        if(countCardsStage === 0 && numberStage !== 2){
+            stage = stage + 1
+            countCardsStage = getCountCardsStage(stage)
+            numberStage++
+            let numberStages = arrStages[numberStage];
             getCardsForNextStage(cardsGreen, arrGreen, greenCard, numberStages, arrStageColor)
         } 
-        if(countCardsStage === 0 && arrNumberStage === 2){
+        if(countCardsStage === 0 && numberStage === 2){  
             desc.classList.remove('visibly')
             desc.classList.add('none')
         }
     })
 }
 
-function getCardsForNextStage(cardsGreen, arrGreen, greenCard, numberStage, arrStageColor){
+const getCardsForNextStage = (cardsGreen, arrGreen, greenCard, numberStage, arrStageColor) => {
     getNumberImageForStage(cardsGreen, arrGreen, greenCard, numberStage, arrStageColor)
     getNumberImageForStage(cardsBrown, arrBrown, brownCard, numberStage, arrStageColor)
     getNumberImageForStage(cardsBlue, arrBlue, blueCard, numberStage, arrStageColor)
 }
 
-function getNumberImageForStage(cardsColor, arrColor, colorCards, numberStage, arrStageColor){
-
+const getNumberImageForStage = (cardsColor, arrColor, colorCards, numberStage, arrStageColor) => {
+    
     for(let i=ancients[indexActiveAncient][numberStage][colorCards]; i>0; i--){
         arrStageColor.push(cardsColor[arrColor[arrColor.length - 1]-1]['cardFace'])
         arrColor.pop()
@@ -191,23 +174,68 @@ function getNumberImageForStage(cardsColor, arrColor, colorCards, numberStage, a
     return arrStageColor;
 }
 
-function backgroundImage(){
+let col = '';
+const backgroundImage = () => {
     let rand = getRandomNum(0, arrStageColor.length)
     let color = '';
-    
+
     (arrStageColor[rand].indexOf('blue', 0)) ? color = arrStageColor[rand].slice(0,5) : color = arrStageColor[rand].slice(0,4);
     
     let url = `url(../assets/MythicCards/${color}/${arrStageColor[rand]})`
     lastCard.style.backgroundImage = url;
     let indexDelete = arrStageColor.indexOf(arrStageColor[rand])
     arrStageColor.splice(indexDelete, 1);
-    
     console.log(arrStageColor.length)
-}
+    col = color;
 
+    changeTracker()
+}
 
 ancientContainer.addEventListener('click', getIndexActiveAncient)
 ancientContainer.addEventListener('click', getArrayWithCountCards)
-difficultyContainer.addEventListener('click', getArrayImageColorCard)
+levelsContainer.addEventListener('click', getArrayImageColorCard)
 desc.addEventListener('click', getArrayImageColorCard)
 
+
+//----------------------------------------------Tracker----------------------------------------//
+const activeSpanDot = document.querySelectorAll('.stage-text');
+const dotGreen = document.querySelectorAll('.green')
+const dotBlue = document.querySelectorAll('.blue')
+const dotBrown = document.querySelectorAll('.brown')
+
+const changeStageText = () => {
+    countCardsStage--;
+    if(countCardsStage === 0){
+        activeSpanDot[numberStage].classList.add('stage-text-active')
+    }
+}
+
+const changeCountDots = () => {
+    if(col === 'brown') {
+        dotBrown[numberStage].textContent = dotBrown[numberStage].textContent - 1;
+    }else if(col === 'green'){
+        dotGreen[numberStage].textContent = dotGreen[numberStage].textContent - 1;
+    }else{
+        dotBlue[numberStage].textContent = dotBlue[numberStage].textContent - 1;
+    }
+}
+
+const getTextContentDots = () => {   
+   textContentDots(dotGreen, greenCard)
+   textContentDots(dotBlue, blueCard)
+   textContentDots(dotBrown, brownCard)
+}
+
+const textContentDots = (dotColor, colorCard) => {
+    dotColor[0].textContent = ancients[indexActiveAncient][firstStage][colorCard]
+    dotColor[1].textContent = ancients[indexActiveAncient][secondStage][colorCard]
+    dotColor[2].textContent = ancients[indexActiveAncient][thirdStage][colorCard]
+}
+
+function changeTracker(){
+    changeCountDots()
+    changeStageText()
+}
+
+levelsContainer.addEventListener('click', getTextContentDots)
+//----------------------------------------------------------------------------------------------//
