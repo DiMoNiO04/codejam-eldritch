@@ -74,18 +74,27 @@ let greenCards = 0, blueCards = 0, brownCards = 0;
 let arr = [];
 const arrStages = [firstStage, secondStage, thirdStage]
 
-function getIdAncientCard(){
-    let idCard = event.target.getAttribute('id')
-    const index = String(idCard).substr(-1)
-    return index;
+let indexActiveAncient = 0;
+
+function getIdAncient(event){
+    const idCard = event.target.id;
+    const index = String(idCard).substr(-1) - 1
+    return index
+}
+
+function getIndexActiveAncient(event){
+    getIdAncient(event)
+    indexActiveAncient = getIdAncient(event)
+    return indexActiveAncient
 }
 
 function getArrayWithCountCards(){
-
-    const indexActiveCard = getIdAncientCard() - 1;
-    greenCards = ancients[indexActiveCard][firstStage][greenCard ] + ancients[indexActiveCard][secondStage][greenCard ] + ancients[indexActiveCard][thirdStage][greenCard ];
-    brownCards = ancients[indexActiveCard][firstStage][brownCard ] + ancients[indexActiveCard][secondStage][brownCard ] + ancients[indexActiveCard][thirdStage][brownCard ];
-    blueCards = ancients[indexActiveCard][firstStage][blueCard ] + ancients[indexActiveCard][secondStage][blueCard ] + ancients[indexActiveCard][thirdStage][blueCard ];
+    
+    let index = 0
+    console.log(indexActiveAncient)
+    greenCards = ancients[indexActiveAncient][firstStage][greenCard ] + ancients[indexActiveAncient][secondStage][greenCard ] + ancients[indexActiveAncient][thirdStage][greenCard ];
+    brownCards = ancients[indexActiveAncient][firstStage][brownCard ] + ancients[indexActiveAncient][secondStage][brownCard ] + ancients[indexActiveAncient][thirdStage][brownCard ];
+    blueCards = ancients[indexActiveAncient][firstStage][blueCard ] + ancients[indexActiveAncient][secondStage][blueCard ] + ancients[indexActiveAncient][thirdStage][blueCard ];
 
     let arr = [greenCards, brownCards, blueCards];
     return arr;
@@ -134,7 +143,7 @@ function getNumberImageColorCard(color, arrColor, cardsColor, arrCards){
 
 let stage = 0
 function getCountCardsStage(stage){
-    let countCardsStage = ancients[0][arrStages[stage]]['blueCards'] + ancients[0][arrStages[stage]]['greenCards'] +ancients[0][arrStages[stage]]['brownCards']
+    let countCardsStage = ancients[indexActiveAncient][arrStages[stage]][blueCard] + ancients[indexActiveAncient][arrStages[stage]][greenCard] +ancients[indexActiveAncient][arrStages[stage]][brownCard]
     return countCardsStage
 }
 
@@ -154,16 +163,18 @@ function difficultUsually(){
         backgroundImage()
         countCardsStage--;
 
-        if(countCardsStage === 0){
+        if(countCardsStage === 0 && arrNumberStage !== 2){
             countCardsStage = getCountCardsStage(stage + 1)
             arrNumberStage++
             let numberStages = arrStages[arrNumberStage];
-            if(arrNumberStage === 3) return
-            else getCardsForNextStage(cardsGreen, arrGreen, greenCard, numberStages, arrStageColor)
+            getCardsForNextStage(cardsGreen, arrGreen, greenCard, numberStages, arrStageColor)
         } 
+        if(countCardsStage === 0 && arrNumberStage === 2){
+            desc.classList.remove('visibly')
+            desc.classList.add('none')
+        }
     })
 }
-
 
 function getCardsForNextStage(cardsGreen, arrGreen, greenCard, numberStage, arrStageColor){
     getNumberImageForStage(cardsGreen, arrGreen, greenCard, numberStage, arrStageColor)
@@ -173,7 +184,7 @@ function getCardsForNextStage(cardsGreen, arrGreen, greenCard, numberStage, arrS
 
 function getNumberImageForStage(cardsColor, arrColor, colorCards, numberStage, arrStageColor){
 
-    for(let i=ancients[0][numberStage][colorCards]; i>0; i--){
+    for(let i=ancients[indexActiveAncient][numberStage][colorCards]; i>0; i--){
         arrStageColor.push(cardsColor[arrColor[arrColor.length - 1]-1]['cardFace'])
         arrColor.pop()
     }
@@ -183,19 +194,20 @@ function getNumberImageForStage(cardsColor, arrColor, colorCards, numberStage, a
 function backgroundImage(){
     let rand = getRandomNum(0, arrStageColor.length)
     let color = '';
-
+    
     (arrStageColor[rand].indexOf('blue', 0)) ? color = arrStageColor[rand].slice(0,5) : color = arrStageColor[rand].slice(0,4);
-
+    
     let url = `url(../assets/MythicCards/${color}/${arrStageColor[rand]})`
     lastCard.style.backgroundImage = url;
     let indexDelete = arrStageColor.indexOf(arrStageColor[rand])
     arrStageColor.splice(indexDelete, 1);
-
+    
     console.log(arrStageColor.length)
 }
 
 
-ancientContainer.addEventListener('click', getIdAncientCard)
-difficultyContainer.addEventListener('click', getIdDifficultCard)
+ancientContainer.addEventListener('click', getIndexActiveAncient)
+ancientContainer.addEventListener('click', getArrayWithCountCards)
 difficultyContainer.addEventListener('click', getArrayImageColorCard)
 desc.addEventListener('click', getArrayImageColorCard)
+

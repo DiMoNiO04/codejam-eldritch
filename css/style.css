@@ -181,10 +181,14 @@
     font-weight: bold;
     text-align: center;
 }
+
 .last-card{
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+
+
 .none{
     opacity: 0;
     visibility: hidden;
