@@ -71,6 +71,7 @@ let greenCards = 0, blueCards = 0, brownCards = 0;
 const arrStages = [firstStage, secondStage, thirdStage]
 let indexActiveAncient = 0, countCardsStage = 0, numberStage = 0;
 let arr = [], arrBlue = [], arrGreen = [], arrBrown = [], arrStageColor = [];
+const VERY_EASY = '0', EASY = '1', MEDIUM = '2', HARD = '3', VERY_HARD = '4';
 
 const getRandomNum = (min, max) => Math.floor(Math.random() * (max - min + min) + min);
 
@@ -99,46 +100,78 @@ const getArrayWithCountCards = () => {
 let idLevel = 0;
 const getIdLevelCard = () => idLevel = event.target.getAttribute('id')
 
+
+let indexLevel = 0
 const getArrayImageColorCard = () => {
     
-    const indexLevel = getIdLevelCard();
-    if(indexLevel === '0'){
-
-    }
+    indexLevel = getIdLevelCard();
     if(indexLevel === '1'){
-
+        mixingDesc()
     }
     if(indexLevel === '2'){
-        mediumLevel();
+        mixingDesc();
     }
     if(indexLevel === '3'){
-
-    }
-    if(indexLevel === '4'){
-
+        mixingDesc()
     }
 }
 
 const getNumberImageColorCard = (color, arrColor, cardsColor, arrCards) => {
    
+    if(indexLevel === EASY){
+        easyLevel(color, arrColor, cardsColor, arrCards)
+    }
+    if(indexLevel === MEDIUM){
+        mediumLevel(color, arrColor, cardsColor, arrCards)
+    }
+    if(indexLevel === HARD){
+        hardLevel(color, arrColor, cardsColor, arrCards)
+    }
+
+    return arrColor
+}
+
+
+const easyLevel = (color, arrColor, cardsColor, arrCards) => {
+    for(let i=0; i<arrCards[color]; i++){
+        let rand = getRandomNum(1, cardsColor.length);
+        if(cardsColor[rand-1]['difficulty'] !== 'hard'){
+            (!arrColor.includes(rand)) ? arrColor.push(rand) : i--;
+        }else{
+            i--
+        }
+    }
+}
+
+const mediumLevel = (color, arrColor, cardsColor, arrCards) => {
     for(let i=0; i<arrCards[color]; i++){
         let rand = getRandomNum(1, cardsColor.length);
         (!arrColor.includes(rand)) ? arrColor.push(rand) : i--;
     }
-    return arrColor
+}
+
+const hardLevel = (color, arrColor, cardsColor, arrCards) => {
+    for(let i=0; i<arrCards[color]; i++){
+        let rand = getRandomNum(1, cardsColor.length);
+        if(cardsColor[rand-1]['difficulty'] !== 'easy'){
+            (!arrColor.includes(rand)) ? arrColor.push(rand) : i--;
+        }else{
+            i--
+        }
+    }
 }
 
 let stage = 0;
 const getCountCardsStage = (stage) => countCardsStage = ancients[indexActiveAncient][arrStages[stage]][blueCard] + ancients[indexActiveAncient][arrStages[stage]][greenCard] +ancients[indexActiveAncient][arrStages[stage]][brownCard]
 
-const mediumLevel = () => {
+const mixingDesc = () => {
 
     let arrCards = getArrayWithCountCards();
     getNumberImageColorCard(0, arrGreen, cardsGreen, arrCards);
-    getNumberImageColorCard(1, arrBrown, cardsBrown,arrCards);
-    getNumberImageColorCard(2, arrBlue, cardsBlue,arrCards);
+    getNumberImageColorCard(1, arrBrown, cardsBrown, arrCards);
+    getNumberImageColorCard(2, arrBlue, cardsBlue, arrCards);
 
-    getCardsForNextStage(cardsGreen, arrGreen, greenCard, firstStage, arrStageColor)
+    getCardsForNextStage(firstStage, arrStageColor)
     let countCardsStage =  getCountCardsStage(stage)
 
     desc.addEventListener('click', () => {
@@ -148,9 +181,9 @@ const mediumLevel = () => {
         if(countCardsStage === 0 && numberStage !== 2){
             stage = stage + 1
             countCardsStage = getCountCardsStage(stage)
-            numberStage++
+            numberStage = numberStage + 1
             let numberStages = arrStages[numberStage];
-            getCardsForNextStage(cardsGreen, arrGreen, greenCard, numberStages, arrStageColor)
+            getCardsForNextStage(numberStages, arrStageColor)
         } 
         if(countCardsStage === 0 && numberStage === 2){  
             desc.classList.remove('visibly')
@@ -159,20 +192,22 @@ const mediumLevel = () => {
     })
 }
 
-const getCardsForNextStage = (cardsGreen, arrGreen, greenCard, numberStage, arrStageColor) => {
+const getCardsForNextStage = (numberStage, arrStageColor) => {
     getNumberImageForStage(cardsGreen, arrGreen, greenCard, numberStage, arrStageColor)
     getNumberImageForStage(cardsBrown, arrBrown, brownCard, numberStage, arrStageColor)
     getNumberImageForStage(cardsBlue, arrBlue, blueCard, numberStage, arrStageColor)
 }
 
 const getNumberImageForStage = (cardsColor, arrColor, colorCards, numberStage, arrStageColor) => {
-    
-    for(let i=ancients[indexActiveAncient][numberStage][colorCards]; i>0; i--){
-        arrStageColor.push(cardsColor[arrColor[arrColor.length - 1]-1]['cardFace'])
+
+    for(let i=0; i<ancients[indexActiveAncient][numberStage][colorCards]; i++){
+        let index = arrColor[arrColor.length - 1];
+        arrStageColor.push(cardsColor[index - 1]['cardFace'])
         arrColor.pop()
     }
     return arrStageColor;
 }
+
 
 let col = '';
 const backgroundImage = () => {
